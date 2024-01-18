@@ -160,6 +160,11 @@ fn build_recast() -> (PathBuf, Vec<PathBuf>, HashMap<String, Option<String>>) {
     HashMap::new()
   };
 
+  let target = env::var("TARGET").expect("TARGET should be provided by Cargo.");
+  if target == "wasm32-unknown-unknown" {
+    lib_builder.target("wasm32-unknown-emscripten");
+  }
+
   let lib_destination = lib_builder.build();
   (
     lib_destination.join("lib"),
